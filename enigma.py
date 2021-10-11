@@ -3,13 +3,18 @@ import string
 import random
 from typing import Optional
 
-
 def generatewire(lenght=26):
     a =[]
     for i in range(0,lenght):
         a.append(i)
     random.shuffle(a)
     return a
+
+def converter(a):
+    l = []
+    for i in a:
+        l.append(list(string.ascii_letters).index(a))
+
 
 class Rotor():
     wire: Optional[list]
@@ -36,12 +41,14 @@ class Rotor():
             self.wire[i] = 0
         else:
             self.wire[i]=int(self.wire[i])+1
+    def reverse(self):
 
 class Enigma():
     def __init__(self,rotors):
         self.rotors = rotors
         self.count = 0
         self.resset = list(string.ascii_lowercase)
+
     def move(self):
         self.rotors[0].rotate()
         if(self.count%26 == 0):
@@ -50,6 +57,7 @@ class Enigma():
             self.rotors[1].rotate()
             self.rotors[2].rotate()
         self.count = self.count +1
+
     def decript(self,a):
         a = self.resset.index(a)
         for i in range(3,0,-1):
@@ -57,7 +65,9 @@ class Enigma():
           a = self.rotors[i].wire[a]
         return a
     def reflect(self,a):
-        pass
+        firstval = self.round(a)
+        secondval = self.round(firstval,True)
+
     def testrun(self):
         a = self.resset.index("a")
         out =self.rotors[0].wire[a]
@@ -67,7 +77,8 @@ class Enigma():
         out = self.rotors[0].wire[a]
         print(out)
         self.move()
-    def translate(self,a,isRev=False):
+
+    def round(self,a,isRev=False):
            min = 2 if isRev else 0
            max = -1 if isRev else 3
            step = -1 if isRev else 1
@@ -87,35 +98,11 @@ class Enigma():
                    #print("this might be erronoes: " + str(a))
                    a = self.rotors[i+1].wire[a]
 
-
-rotorlist1 = []
-rotorlist2 = []
-for i in range(0,3):
-    wire = generatewire()
-    rotorlist1.append(Rotor(wire))
-    rotorlist2.append(Rotor(wire))
-enigma = Enigma(rotorlist1)
-#inp = "aaa"
-inp = input()
-outp = ""
-
-#print(*enigma.rotors[0].wire)
-#print(*enigma.rotors[1].wire)
-#print(*enigma.rotors[2].wire)
-
-for i in inp:
-    outp = outp +enigma.translate(i,True)
-enigma2 = Enigma(rotorlist2)
-print(outp)
-decrypt = ""
-
-#print(*enigma.rotors[0].wire)
-#print(*enigma.rotors[1].wire)
-#print(*enigma.rotors[2].wire)
-#for i in outp:
-#   decrypt = decrypt + enigma2.decript(i)
-#print(f"input: {inp} encryptet: {outp} decrypted: {decrypt} ")
-
-#for i in range(0,30):
-#    enigma.move()
-#    print(f" wire {enigma.rotors[0].wire[i%26]} alpabeth {enigma.rotors[0].char[i%26]}")
+def main():
+    rotorlist1 = []
+    rotorlist2 = []
+    for i in range(0,3):
+        wire = generatewire()
+        rotorlist1.append(Rotor(wire))
+        rotorlist2.append(Rotor(wire))
+    enigma = Enigma(rotorlist1)
