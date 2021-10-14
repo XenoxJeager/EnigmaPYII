@@ -1,3 +1,6 @@
+import string
+import random
+
 def generatewire(lenght=26):
     a =[]
     for i in range(0,lenght):
@@ -5,7 +8,8 @@ def generatewire(lenght=26):
     random.shuffle(a)
     return a
 
-def converter(a):
-    l = []
+def convert(a):
+    wire = []
     for i in a:
-        l.append(list(string.ascii_letters).index(a))
+        wire.append(string.ascii_letters.upper().index(i))
+    return wire

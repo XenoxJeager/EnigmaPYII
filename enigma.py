@@ -1,7 +1,31 @@
 import binascii
 import string
-import random
+import random,sys
 from typing import Optional
+
+# i will add it to the other class
+def generatewire(lenght=26):
+    a =[]
+    for i in range(0,lenght):
+        a.append(i)
+    random.shuffle(a)
+    return a
+
+def convert(a):
+    wire = []
+    for i in a:
+        wire.append(string.ascii_letters.upper().index(i))
+    return wire
+
+#variables
+rotor_I = convert("EKMFLGDQVZNTOWYHXUSPAIBRCJ")
+rotor_II = convert("AJDKSIRUXBLHWTMCQGZNPYFVOE")
+rotor_III = convert("BDFHJLCPRTXVZNYEIWGAKMUSQO")
+rotor_IV = convert("ESOVPZJAYQUIRHXLNFTGKDCMWB")
+rotor_V = convert("VZBRGITYUPSDNHLXAWMJQOFECK")
+ukw_a = convert("EJMZALYXVBWFCRQUONTSPIKHGD")
+ukw_b = convert("YRUHQSLDPXNGOKMIEBFZCWVJAT")
+ukw_c = convert("FVPJIAOYEDRZXWGCTKUQSBNMHL")
 
 class Rotor():
     wire: Optional[list]
@@ -88,3 +112,4 @@ def main():
         rotorlist1.append(Rotor(wire))
         rotorlist2.append(Rotor(wire))
     enigma = Enigma(rotorlist1)
+main()
