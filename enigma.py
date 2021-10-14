@@ -3,19 +3,6 @@ import string
 import random
 from typing import Optional
 
-def generatewire(lenght=26):
-    a =[]
-    for i in range(0,lenght):
-        a.append(i)
-    random.shuffle(a)
-    return a
-
-def converter(a):
-    l = []
-    for i in a:
-        l.append(list(string.ascii_letters).index(a))
-
-
 class Rotor():
     wire: Optional[list]
     char: Optional[list]
@@ -58,15 +45,10 @@ class Enigma():
             self.rotors[2].rotate()
         self.count = self.count +1
 
-    def decript(self,a):
-        a = self.resset.index(a)
-        for i in range(3,0,-1):
-          a = self.rotors[i].wire.index(a)
-          a = self.rotors[i].wire[a]
-        return a
     def reflect(self,a):
         firstval = self.round(a)
         secondval = self.round(firstval,True)
+        return secondval
 
     def testrun(self):
         a = self.resset.index("a")
