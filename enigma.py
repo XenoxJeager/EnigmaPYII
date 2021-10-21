@@ -79,20 +79,25 @@ class Enigma():
            min = 2 if isRev else 0
            max = -1 if isRev else 3
            step = -1 if isRev else 1
-           a = self.chars.index(a)
+           a = self.chars.index(a) # a = 0
            for i in range(min,max,step):
-               a = self.rotors[i].wire[a]
+               a = self.rotors[i].wire[a] # e=4
                if (i==max-step):
                    #print("this might be erronoes: " + str(a))
-                   a = self.ukw[a]
-                   self.move()
-                   return a
+                   if isRev:
+                       a = self.rotors[i].wire.index(a)
+                       self.move()
+                       return a
+                   else:
+                       a = self.ukw[a]
+                       self.move()
+                       return a
                if isRev:
                    #print("this might be erronoes: "+ str(a))
                    a = self.rotors[i-1].wire[a]
                else:
                    #print("this might be erronoes: " + str(a))
-                   a = self.rotors[i+1].wire[a]
+                   a = self.rotors[i+1].wire[a] #4 =
 
 def testrun():
     letter = list(string.ascii_lowercase)
@@ -109,9 +114,19 @@ def main():
 
     enigma1 = Enigma(rotorlist1, ukw_a)
     enigma2 = Enigma(rotorlist1, ukw_a)
-    print(enigma1.reflect("b"))
     #print(enigma1.reflect("j"))
-    a = enigma1.reflect("m")
+
+    print(b)
+    #a = enigma2.reflect(a)
+    print(enigma1.reflect("b"))
+
     print(a)
-testrun()
-main()
+#testrun()
+#main()
+rotorlist1 = [Rotor(rotor_I), Rotor(rotor_II), Rotor(rotor_III)]
+enigma2 = Enigma(rotorlist1, ukw_a)
+a = input()
+b = ""
+for i in a:
+    b = b + enigma2.reflect(i)
+print(b)
