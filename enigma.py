@@ -70,34 +70,27 @@ class Enigma():
         self.count = self.count +1
 
     def reflect(self,a):
-        firstval = self.round(a)
+        firstval = self.forward(a)
         a = self.chars[firstval]
-        secondval = self.round(a,True)
-        return self.chars[secondval]
+        secondval = self.backward(a)
+        self.move()
+        return secondval
 
-    def round(self,a,isRev=False):
-           min = 2 if isRev else 0
-           max = -1 if isRev else 3
-           step = -1 if isRev else 1
+    def backward(self,a):
+        a = self.chars.index(a)
+        for i in range(2,-1,-1):
+            a = self.rotors[i].wire.index(a)
+            if i == 0:
+                return self.chars[a]
+
+    def forward(self,a):
            a = self.chars.index(a) # a = 0
-           for i in range(min,max,step):
+           for i in range(0,3,1):
                a = self.rotors[i].wire[a] # e=4
-               if (i==max-step):
-                   #print("this might be erronoes: " + str(a))
-                   if isRev:
-                       a = self.rotors[i].wire.index(a)
-                       self.move()
-                       return a
-                   else:
-                       a = self.ukw[a]
-                       self.move()
-                       return a
-               if isRev:
-                   #print("this might be erronoes: "+ str(a))
-                   a = self.rotors[i-1].wire[a]
-               else:
-                   #print("this might be erronoes: " + str(a))
-                   a = self.rotors[i+1].wire[a] #4 =
+               if (i==2):
+                    a = self.ukw[a]
+                    return a
+                #print("this might be erronoes: " + str(a))
 
 def testrun():
     letter = list(string.ascii_lowercase)
@@ -123,10 +116,15 @@ def main():
     print(a)
 #testrun()
 #main()
-rotorlist1 = [Rotor(rotor_I), Rotor(rotor_II), Rotor(rotor_III)]
-enigma2 = Enigma(rotorlist1, ukw_a)
-a = input()
-b = ""
-for i in a:
-    b = b + enigma2.reflect(i)
-print(b)
+while True:
+    rotorlist1 = [Rotor(rotor_I), Rotor(rotor_II), Rotor(rotor_III)]
+    enigma2 = Enigma(rotorlist1, ukw_a)
+    a = input("enigma>")
+    b = ""
+    for i in a:
+        b = b + enigma2.reflect(i)
+    print("out>"+b)
+
+
+
+
