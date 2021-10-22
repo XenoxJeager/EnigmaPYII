@@ -1,6 +1,6 @@
 import binascii
 import string
-import random,sys
+import random,re
 from typing import Optional
 
 # i will add it to the other class
@@ -30,9 +30,11 @@ ukw_c = convert("FVPJIAOYEDRZXWGCTKUQSBNMHL")
 class Rotor():
     wire: Optional[list]
     char: Optional[list]
+
     def __init__(self,wire,char=None):
         self.char = char if char is not None else list(string.ascii_lowercase)
         self.wire = list(wire)
+
     def rotate(self):
         char2 = []
         wire2 = []
@@ -48,7 +50,7 @@ class Rotor():
         self.wire = wire2
         self.char = char2
     def add(self,i):
-        if(self.wire[i] == len(self.char)-1):
+        if self.wire[i] == len(self.char)-1:
             self.wire[i] = 0
         else:
             self.wire[i]=int(self.wire[i])+1
@@ -60,14 +62,23 @@ class Enigma():
         self.ukw = ukw
         self.chars = list(string.ascii_lowercase)
 
+    def setter(self,i,rotor):
+        for l in range(0,i,1):
+            self.rotors[rotor].rotate()
+
+    def rotate(self,rot0=0,rot1=0,rot2=0):
+        self.setter(rot0,0)
+        self.setter(rot1, 1)
+        self.setter(rot2, 2)
+
     def move(self):
         self.rotors[0].rotate()
-        if(self.count%26 == 0):
+        if self.count % 26 == 0:
             self.rotors[1].rotate()
-        if(self.count %(26*26) == 0):
+        if self.count % (26 * 26) == 0:
             self.rotors[1].rotate()
             self.rotors[2].rotate()
-        self.count = self.count +1
+        self.count = self.count + 1
 
     def reflect(self,a):
         firstval = self.forward(a)
@@ -101,29 +112,25 @@ def testrun():
         letterrev.append(enigma1.reflect(i))
     print(*letter)
     print(*letterrev)
+
 def main():
-    rotorlist1 = [Rotor(rotor_I), Rotor(rotor_II), Rotor(rotor_III)]
-    rotorlist2 = [Rotor(rotor_I),Rotor(rotor_II),Rotor(rotor_III)]
+    while True:
+        rotorlist1 = [Rotor(rotor_I), Rotor(rotor_II), Rotor(rotor_III)]
+        enigma2 = Enigma(rotorlist1, ukw_a)
+        enigma2.rotate(1,8,9)
+        a = input("enigma>")
+        b = ""
+        for i in a.lower():
+            try:
+                list(string.ascii_lowercase).index(i)
+                b = b + enigma2.reflect(i)
+            except:
+                b="invalid input"
+                break
+        print("out>" + b)
 
-    enigma1 = Enigma(rotorlist1, ukw_a)
-    enigma2 = Enigma(rotorlist1, ukw_a)
-    #print(enigma1.reflect("j"))
-
-    print(b)
-    #a = enigma2.reflect(a)
-    print(enigma1.reflect("b"))
-
-    print(a)
 #testrun()
-#main()
-while True:
-    rotorlist1 = [Rotor(rotor_I), Rotor(rotor_II), Rotor(rotor_III)]
-    enigma2 = Enigma(rotorlist1, ukw_a)
-    a = input("enigma>")
-    b = ""
-    for i in a:
-        b = b + enigma2.reflect(i)
-    print("out>"+b)
+main()
 
 
 
