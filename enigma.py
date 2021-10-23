@@ -61,15 +61,21 @@ class Enigma():
         self.count = 0
         self.ukw = ukw
         self.chars = list(string.ascii_lowercase)
+        self.plugboard = list(string.ascii_lowercase)
 
-    def setter(self,i,rotor):
+    def setplugboard(self,l):
+        if len(l) == 26:
+            self.plugboard = l
+
+    def setpos(self,i,rotor):
         for l in range(0,i,1):
             self.rotors[rotor].rotate()
+            self.count = self.count + 1
 
     def rotate(self,rot0=0,rot1=0,rot2=0):
-        self.setter(rot0,0)
-        self.setter(rot1, 1)
-        self.setter(rot2, 2)
+        self.setpos(rot0,0)
+        self.setpos(rot1, 1)
+        self.setpos(rot2, 2)
 
     def move(self):
         self.rotors[0].rotate()
@@ -92,10 +98,10 @@ class Enigma():
         for i in range(2,-1,-1):
             a = self.rotors[i].wire.index(a)
             if i == 0:
-                return self.chars[a]
+                return self.plugboard[a]
 
     def forward(self,a):
-           a = self.chars.index(a) # a = 0
+           a = self.plugboard.index(a) # a = 0
            for i in range(0,3,1):
                a = self.rotors[i].wire[a] # e=4
                if (i==2):
@@ -117,6 +123,12 @@ def main():
     while True:
         rotorlist1 = [Rotor(rotor_I), Rotor(rotor_II), Rotor(rotor_III)]
         enigma2 = Enigma(rotorlist1, ukw_a)
+        b = enigma2.chars.index("g")
+        b2 = enigma2.chars.index("x")
+        a = list(string.ascii_lowercase)
+        a[b] = "x"
+        a[b2] = "g"
+        enigma2.setplugboard(a)
         enigma2.rotate(1,8,9)
         a = input("enigma>")
         b = ""
