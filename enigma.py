@@ -1,6 +1,5 @@
-import binascii
-import string
-import random,re
+import random,string
+from tkinter import  *
 from typing import Optional
 
 # i will add it to the other class
@@ -141,8 +140,13 @@ def main():
                 break
         print("out>" + b)
 
+def graphics():
+    master = Tk()
+
+    mainloop()
+
 #testrun()
-main()
+#main()
 
 
 
