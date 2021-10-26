@@ -6,7 +6,8 @@ The python library ttkthemes should be installed to run the program.
 
 ``pip3 install ttkthemes``
 
-##Usage
+## Usage
+
 the command 
 
 ``python3 enigma.py``
