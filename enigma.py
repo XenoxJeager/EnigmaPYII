@@ -5,7 +5,7 @@ from tkinter import ttk
 
 from ttkthemes import *
 
-from EnigmaPYII.package.rotor import Rotor
+
 
 
 def generatewire(lenght=26):
@@ -38,6 +38,32 @@ rotor_V = convert("VZBRGITYUPSDNHLXAWMJQOFECK")
 ukw_a = convert("EJMZALYXVBWFCRQUONTSPIKHGD")
 ukw_b = convert("YRUHQSLDPXNGOKMIEBFZCWVJAT")
 ukw_c = convert("FVPJIAOYEDRZXWGCTKUQSBNMHL")
+
+class Rotor():
+    def __init__(self,wire,turn,char=None):
+        self.char = char if char is not None else list(string.ascii_lowercase)
+        self.wire = list(wire)
+        self.turn = turn
+
+    def rotate(self):
+        char2 = []
+        wire2 = []
+        for i in range(0,len(self.char)):
+            if (i == len(self.char)-1):
+                self.add(i)
+                wire2.insert(0,self.wire[i])
+                char2.insert(0,self.char[i])
+            else:
+                self.add(i)
+                char2.insert(i+1, self.char[i])
+                wire2.insert(i+1, self.wire[i])
+        self.wire = wire2
+        self.char = char2
+    def add(self,i):
+        if self.wire[i] == len(self.char)-1:
+            self.wire[i] = 0
+        else:
+            self.wire[i]=int(self.wire[i])+1
 
 
 class Enigma():
@@ -150,10 +176,9 @@ def graphics():
     set1.pack(side="left", fill="y")
     set2.pack(side="left", fill="y")
     set3.pack(side="left", fill="y")
-
     text_map = ttk.Entry(box_frame1)
     text_map.pack(side="left", fill="y", padx=10, pady=5)
-    
+
     s1 = ttk.Scrollbar(encrypt_row)
     text_write = tkinter.Text(encrypt_row, height=4, width=50)
     s1.pack(side="left", fill="y")
