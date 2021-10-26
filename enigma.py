@@ -1,6 +1,7 @@
-import random,string
-from tkinter import  *
-from typing import Optional
+import random,string,tkinter
+from tkinter import  ttk
+from EnigmaPYII.package.rotor import Rotor
+from ttkthemes import *
 
 # i will add it to the other class
 def generatewire(lenght=26):
@@ -17,6 +18,12 @@ def convert(a):
     return tuple(wire)
 
 #variables
+pol_I = 17
+pol_II = 5
+pol_III = 22
+pol_IV = 10
+pol_V = 26
+
 rotor_I = convert("EKMFLGDQVZNTOWYHXUSPAIBRCJ")
 rotor_II = convert("AJDKSIRUXBLHWTMCQGZNPYFVOE")
 rotor_III = convert("BDFHJLCPRTXVZNYEIWGAKMUSQO")
@@ -25,35 +32,6 @@ rotor_V = convert("VZBRGITYUPSDNHLXAWMJQOFECK")
 ukw_a = convert("EJMZALYXVBWFCRQUONTSPIKHGD")
 ukw_b = convert("YRUHQSLDPXNGOKMIEBFZCWVJAT")
 ukw_c = convert("FVPJIAOYEDRZXWGCTKUQSBNMHL")
-
-class Rotor():
-    wire: Optional[list]
-    char: Optional[list]
-
-    def __init__(self,wire,char=None):
-        self.char = char if char is not None else list(string.ascii_lowercase)
-        self.wire = list(wire)
-
-    def rotate(self):
-        char2 = []
-        wire2 = []
-        for i in range(0,len(self.char)):
-            if (i == len(self.char)-1):
-                self.add(i)
-                wire2.insert(0,self.wire[i])
-                char2.insert(0,self.char[i])
-            else:
-                self.add(i)
-                char2.insert(i+1, self.char[i])
-                wire2.insert(i+1, self.wire[i])
-        self.wire = wire2
-        self.char = char2
-    def add(self,i):
-        if self.wire[i] == len(self.char)-1:
-            self.wire[i] = 0
-        else:
-            self.wire[i]=int(self.wire[i])+1
-
 class Enigma():
     def __init__(self,rotors,ukw):
         self.rotors = rotors
@@ -78,9 +56,9 @@ class Enigma():
 
     def move(self):
         self.rotors[0].rotate()
-        if self.count % 26 == 0:
+        if self.count % self.rotors[1].turn == 0:
             self.rotors[1].rotate()
-        if self.count % (26 * 26) == 0:
+        if self.count % (self.rotors[1].turn * self.rotors[1].turn) == 0:
             self.rotors[1].rotate()
             self.rotors[2].rotate()
         self.count = self.count + 1
@@ -108,19 +86,9 @@ class Enigma():
                     return a
                 #print("this might be erronoes: " + str(a))
 
-def testrun():
-    letter = list(string.ascii_lowercase)
-    letterrev = []
-    for i in letter:
-        rotorlist1 = [Rotor(rotor_I), Rotor(rotor_II), Rotor(rotor_III)]
-        enigma1 = Enigma(rotorlist1, ukw_a)
-        letterrev.append(enigma1.reflect(i))
-    print(*letter)
-    print(*letterrev)
-
 def main():
     while True:
-        rotorlist1 = [Rotor(rotor_I), Rotor(rotor_II), Rotor(rotor_III)]
+        rotorlist1 = [Rotor(rotor_I,pol_I), Rotor(rotor_II,pol_II), Rotor(rotor_III,pol_III)]
         enigma2 = Enigma(rotorlist1, ukw_a)
         b = enigma2.chars.index("g")
         b2 = enigma2.chars.index("x")
@@ -141,13 +109,26 @@ def main():
         print("out>" + b)
 
 def graphics():
-    master = Tk()
+    window = ThemedTk(theme="arc")
+    global val_1,val_2,val_3,ukw,text_write,text_map
 
-    mainloop()
+    val_1 = ttk.Combobox(window,values=["I","II","III","IV","V"],state="readonly").grid(row=0,column=1,pady=10,padx=10,sticky = tkinter.N)
+    val_2 = ttk.Combobox(window, values=["I", "II", "III", "IV", "V"], state="readonly").grid(row=1, column=1, pady=10,padx=10,sticky = tkinter.N)
+    val_3 = ttk.Combobox(window, values=["I", "II", "III", "IV", "V"], state="readonly").grid(row=2, column=1, pady=10,padx=10,sticky = tkinter.N)
+    ukw = ttk.Combobox(window, values=["ukw_1", "ukw_2", "ukw_3"], state="readonly").grid(row=3, column=1, pady=10,padx=10,sticky = tkinter.N)
 
+    text_write = ttk.Entry(window,text="input...").grid(row=0,column=3,padx=10,pady=10,ipady=40,ipadx=70 ,sticky = tkinter.N)
+    text_map = ttk.Entry(window, text="out").insert(window,"j")
+
+    ttk.Label(window, text="rotor 1").grid(row=0,column=0,pady=10,padx=10,sticky = tkinter.N)
+    ttk.Label(window, text="ukw").grid(row=3, column=0, pady=10, padx=10,sticky = tkinter.N)
+    ttk.Label(window, text="rotor 2").grid(row=1,column=0,pady=10,padx=10,sticky = tkinter.N)
+    ttk.Label(window, text="rotor 3").grid(row=2,column=0,pady=10,padx=10,sticky = tkinter.N)
+    ttk.Button(window, text="encrypt",).grid(row=4,column=0,pady=10,padx=10,sticky = tkinter.N)
+    window.mainloop()
 #testrun()
 #main()
-
+graphics()
 
 
 
