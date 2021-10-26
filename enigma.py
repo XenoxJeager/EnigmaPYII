@@ -6,8 +6,6 @@ from tkinter import ttk
 from ttkthemes import *
 
 
-
-
 def generatewire(lenght=26):
     a = []
     for i in range(0, lenght):
@@ -39,8 +37,9 @@ ukw_a = convert("EJMZALYXVBWFCRQUONTSPIKHGD")
 ukw_b = convert("YRUHQSLDPXNGOKMIEBFZCWVJAT")
 ukw_c = convert("FVPJIAOYEDRZXWGCTKUQSBNMHL")
 
+
 class Rotor():
-    def __init__(self,wire,turn,char=None):
+    def __init__(self, wire, turn, char=None):
         self.char = char if char is not None else list(string.ascii_lowercase)
         self.wire = list(wire)
         self.turn = turn
@@ -48,22 +47,23 @@ class Rotor():
     def rotate(self):
         char2 = []
         wire2 = []
-        for i in range(0,len(self.char)):
-            if (i == len(self.char)-1):
+        for i in range(0, len(self.char)):
+            if (i == len(self.char) - 1):
                 self.add(i)
-                wire2.insert(0,self.wire[i])
-                char2.insert(0,self.char[i])
+                wire2.insert(0, self.wire[i])
+                char2.insert(0, self.char[i])
             else:
                 self.add(i)
-                char2.insert(i+1, self.char[i])
-                wire2.insert(i+1, self.wire[i])
+                char2.insert(i + 1, self.char[i])
+                wire2.insert(i + 1, self.wire[i])
         self.wire = wire2
         self.char = char2
-    def add(self,i):
-        if self.wire[i] == len(self.char)-1:
+
+    def add(self, i):
+        if self.wire[i] == len(self.char) - 1:
             self.wire[i] = 0
         else:
-            self.wire[i]=int(self.wire[i])+1
+            self.wire[i] = int(self.wire[i]) + 1
 
 
 class Enigma():
@@ -132,7 +132,7 @@ def graphics():
     encrypt_row = tkinter.Frame(window, bd=1, padx=10, pady=5)
     out_row = tkinter.Frame(window, bd=1, padx=10, pady=5)
     last_row = tkinter.Frame(window, bd=1, padx=10, pady=5)
-    
+
     box_frame1.grid(row=0, column=0, sticky="nsew", padx=2, pady=2)
     box_frame2.grid(row=1, column=0, sticky="nsew", padx=2, pady=2)
     box_frame3.grid(row=2, column=0, sticky="nsew", padx=2, pady=2)
@@ -146,7 +146,7 @@ def graphics():
     val_2 = ttk.Combobox(box_frame2, values=["I", "II", "III", "IV", "V"], state="readonly")
     val_3 = ttk.Combobox(box_frame3, values=["I", "II", "III", "IV", "V"], state="readonly")
     ukw = ttk.Combobox(box_frame4, values=["ukw_a", "ukw_b", "ukw_c"], state="readonly")
-    
+
     val_1.set("I")
     val_2.set("II")
     val_3.set("III")
@@ -155,21 +155,21 @@ def graphics():
     val_2.pack(side="left", fill="y")
     val_3.pack(side="left", fill="y")
     ukw.pack(side="left", fill="y")
-    
+
     ttk.Label(box_frame1, text="rotor 1").pack(side="left", fill="y", padx=10, pady=5)
     ttk.Label(box_frame2, text="rotor 2").pack(side="left", fill="y", padx=10, pady=5)
     ttk.Label(box_frame3, text="rotor 3").pack(side="left", fill="y", padx=10, pady=5)
     ttk.Label(box_frame4, text="ukw    ").pack(side="left", fill="y", padx=10, pady=5)
     ttk.Label(box_frame1, text="plugboard").pack(side="left", fill="y", padx=10, pady=5)
     ttk.Label(box_frame2, text="rotorpos").pack(side="left", fill="y", padx=10, pady=5)
-    
+
     my_var = tkinter.StringVar(window)
     my_var.set("0")
     my_var2 = tkinter.StringVar(window)
     my_var2.set("0")
     my_var3 = tkinter.StringVar(window)
     my_var3.set("0")
-    
+
     set1 = ttk.Spinbox(box_frame2, from_=0, to=26, width=3, state="readonly", textvariable=my_var)
     set2 = ttk.Spinbox(box_frame2, from_=0, to=26, width=3, state="readonly", textvariable=my_var2)
     set3 = ttk.Spinbox(box_frame2, from_=0, to=26, width=3, state="readonly", textvariable=my_var3)
@@ -192,9 +192,9 @@ def graphics():
     out_map.pack(side="left", fill="y")
     s2.config(command=out_map.yview)
     out_map.config(yscrollcommand=s2.set)
-    
+
     ttk.Button(last_row, text="encrypt", command=run).pack(side="left", fill="y")
-    
+
     window.mainloop()
 
 
@@ -244,7 +244,7 @@ def run():
     b = ""
     enigma.setplugboard(boardparse())
     out_map.delete('1.0', 'end-1c')
-    
+
     for i in text_write.get("1.0", 'end-1c').lower():
         try:
 
@@ -255,5 +255,6 @@ def run():
             b = "invalid input" + i
             break
     out_map.insert("end-1c", b)
+
 
 graphics()
