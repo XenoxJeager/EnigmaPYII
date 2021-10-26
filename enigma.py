@@ -21,7 +21,6 @@ def convert(a):
     return tuple(wire)
 
 
-# variables
 pol_I = 17
 pol_II = 5
 pol_III = 22
@@ -120,84 +119,6 @@ class Enigma():
                 return a
 
 
-def graphics():
-    global val_1, val_2, val_3, ukw, text_write, text_map, out_map, set1, set2, set3
-    window = ThemedTk(theme="arc")
-
-    box_frame1 = tkinter.Frame(window, bd=1, padx=10, pady=5)
-    box_frame2 = tkinter.Frame(window, bd=1, padx=10, pady=5)
-    box_frame3 = tkinter.Frame(window, bd=1, padx=10, pady=5)
-    box_frame4 = tkinter.Frame(window, bd=1, padx=10, pady=5)
-    board_frame = tkinter.Frame(window, bd=1, padx=10, pady=5)
-    encrypt_row = tkinter.Frame(window, bd=1, padx=10, pady=5)
-    out_row = tkinter.Frame(window, bd=1, padx=10, pady=5)
-    last_row = tkinter.Frame(window, bd=1, padx=10, pady=5)
-
-    box_frame1.grid(row=0, column=0, sticky="nsew", padx=2, pady=2)
-    box_frame2.grid(row=1, column=0, sticky="nsew", padx=2, pady=2)
-    box_frame3.grid(row=2, column=0, sticky="nsew", padx=2, pady=2)
-    box_frame4.grid(row=3, column=0, sticky="nsew", padx=2, pady=2)
-    encrypt_row.grid(row=4, column=0, sticky="nsew", padx=2, pady=2)
-    out_row.grid(row=4, column=1, sticky="nsew", padx=2, pady=2)
-    board_frame.grid(row=0, column=1, sticky="nsew", padx=2, pady=2)
-    last_row.grid(row=6, column=0, sticky="nsew", padx=2, pady=2)
-
-    val_1 = ttk.Combobox(box_frame1, values=["I", "II", "III", "IV", "V"], state="readonly")
-    val_2 = ttk.Combobox(box_frame2, values=["I", "II", "III", "IV", "V"], state="readonly")
-    val_3 = ttk.Combobox(box_frame3, values=["I", "II", "III", "IV", "V"], state="readonly")
-    ukw = ttk.Combobox(box_frame4, values=["ukw_a", "ukw_b", "ukw_c"], state="readonly")
-
-    val_1.set("I")
-    val_2.set("II")
-    val_3.set("III")
-    ukw.set("ukw_a")
-    val_1.pack(side="left", fill="x")
-    val_2.pack(side="left", fill="y")
-    val_3.pack(side="left", fill="y")
-    ukw.pack(side="left", fill="y")
-
-    ttk.Label(box_frame1, text="rotor 1").pack(side="left", fill="y", padx=10, pady=5)
-    ttk.Label(box_frame2, text="rotor 2").pack(side="left", fill="y", padx=10, pady=5)
-    ttk.Label(box_frame3, text="rotor 3").pack(side="left", fill="y", padx=10, pady=5)
-    ttk.Label(box_frame4, text="ukw    ").pack(side="left", fill="y", padx=10, pady=5)
-    ttk.Label(box_frame1, text="plugboard").pack(side="left", fill="y", padx=10, pady=5)
-    ttk.Label(box_frame2, text="rotorpos").pack(side="left", fill="y", padx=10, pady=5)
-
-    my_var = tkinter.StringVar(window)
-    my_var.set("0")
-    my_var2 = tkinter.StringVar(window)
-    my_var2.set("0")
-    my_var3 = tkinter.StringVar(window)
-    my_var3.set("0")
-
-    set1 = ttk.Spinbox(box_frame2, from_=0, to=26, width=3, state="readonly", textvariable=my_var)
-    set2 = ttk.Spinbox(box_frame2, from_=0, to=26, width=3, state="readonly", textvariable=my_var2)
-    set3 = ttk.Spinbox(box_frame2, from_=0, to=26, width=3, state="readonly", textvariable=my_var3)
-    set1.pack(side="left", fill="y")
-    set2.pack(side="left", fill="y")
-    set3.pack(side="left", fill="y")
-    text_map = ttk.Entry(box_frame1)
-    text_map.pack(side="left", fill="y", padx=10, pady=5)
-
-    s1 = ttk.Scrollbar(encrypt_row)
-    text_write = tkinter.Text(encrypt_row, height=4, width=50)
-    s1.pack(side="left", fill="y")
-    text_write.pack(side="left", fill="y")
-    s1.config(command=text_write.yview)
-    text_write.config(yscrollcommand=s1.set)
-
-    s2 = ttk.Scrollbar(out_row)
-    out_map = tkinter.Text(out_row, height=4, width=50)
-    s2.pack(side="left", fill="y")
-    out_map.pack(side="left", fill="y")
-    s2.config(command=out_map.yview)
-    out_map.config(yscrollcommand=s2.set)
-
-    ttk.Button(last_row, text="encrypt", command=run).pack(side="left", fill="y")
-
-    window.mainloop()
-
-
 def parserot(box):
     if box.get() == "I":
         rot = Rotor(rotor_I, pol_I)
@@ -255,6 +176,88 @@ def run():
             b = "invalid input" + i
             break
     out_map.insert("end-1c", b)
+
+
+def graphics():
+    global val_1, val_2, val_3, ukw, text_write, text_map, out_map, set1, set2, set3
+    window = ThemedTk(theme="arc")
+    window.title = "Enigma"
+
+    box_frame1 = tkinter.Frame(window, bd=1, padx=10, pady=5)
+    box_frame2 = tkinter.Frame(window, bd=1, padx=10, pady=5)
+    box_frame3 = tkinter.Frame(window, bd=1, padx=10, pady=5)
+    box_frame4 = tkinter.Frame(window, bd=1, padx=10, pady=5)
+    board_frame = tkinter.Frame(window, bd=1, padx=10, pady=5)
+    encrypt_row = tkinter.Frame(window, bd=1, padx=10, pady=5)
+    out_row = tkinter.Frame(window, bd=1, padx=10, pady=5)
+    last_row = tkinter.Frame(window, bd=1, padx=10, pady=5)
+
+    box_frame1.grid(row=0, column=0, sticky="nsew", padx=2, pady=2)
+    box_frame2.grid(row=1, column=0, sticky="nsew", padx=2, pady=2)
+    box_frame3.grid(row=2, column=0, sticky="nsew", padx=2, pady=2)
+    box_frame4.grid(row=3, column=0, sticky="nsew", padx=2, pady=2)
+    encrypt_row.grid(row=4, column=0, sticky="nsew", padx=2, pady=2)
+    out_row.grid(row=4, column=1, sticky="nsew", padx=2, pady=2)
+    board_frame.grid(row=0, column=1, sticky="nsew", padx=2, pady=2)
+    last_row.grid(row=6, column=0, sticky="nsew", padx=2, pady=2)
+
+    val_1 = ttk.Combobox(box_frame1, values=["I", "II", "III", "IV", "V"], state="readonly")
+    val_2 = ttk.Combobox(box_frame2, values=["I", "II", "III", "IV", "V"], state="readonly")
+    val_3 = ttk.Combobox(box_frame3, values=["I", "II", "III", "IV", "V"], state="readonly")
+    ukw = ttk.Combobox(box_frame4, values=["ukw_a", "ukw_b", "ukw_c"], state="readonly")
+
+    val_1.set("I")
+    val_2.set("II")
+    val_3.set("III")
+    ukw.set("ukw_a")
+    val_1.pack(side="left", fill="x")
+    val_2.pack(side="left", fill="y")
+    val_3.pack(side="left", fill="y")
+    ukw.pack(side="left", fill="y")
+
+    ttk.Label(box_frame1, text="rotor 1").pack(side="left", fill="y", padx=10, pady=5)
+    ttk.Label(box_frame2, text="rotor 2").pack(side="left", fill="y", padx=10, pady=5)
+    ttk.Label(box_frame3, text="rotor 3").pack(side="left", fill="y", padx=10, pady=5)
+    ttk.Label(box_frame4, text="ukw    ").pack(side="left", fill="y", padx=10, pady=5)
+    ttk.Label(box_frame1, text="plugboard").pack(side="left", fill="y", padx=10, pady=5)
+    ttk.Label(box_frame2, text="rotorpos").pack(side="left", fill="y", padx=10, pady=5)
+
+    my_var = tkinter.StringVar(window)
+    my_var.set("0")
+    my_var2 = tkinter.StringVar(window)
+    my_var2.set("0")
+    my_var3 = tkinter.StringVar(window)
+    my_var3.set("0")
+
+    set1 = ttk.Spinbox(box_frame2, from_=0, to=26, width=3, state="readonly", textvariable=my_var)
+    set2 = ttk.Spinbox(box_frame2, from_=0, to=26, width=3, state="readonly", textvariable=my_var2)
+    set3 = ttk.Spinbox(box_frame2, from_=0, to=26, width=3, state="readonly", textvariable=my_var3)
+    set1.pack(side="left", fill="y")
+    set2.pack(side="left", fill="y")
+    set3.pack(side="left", fill="y")
+
+    my_var4 = tkinter.StringVar(window)
+    my_var4.set("eg a:b c:d e:f")
+    text_map = ttk.Entry(box_frame1,textvariable=my_var4)
+    text_map.pack(side="left", fill="y", padx=10, pady=5)
+
+    s1 = ttk.Scrollbar(encrypt_row)
+    text_write = tkinter.Text(encrypt_row, height=4, width=50)
+    s1.pack(side="left", fill="y")
+    text_write.pack(side="left", fill="y")
+    s1.config(command=text_write.yview)
+    text_write.config(yscrollcommand=s1.set)
+
+    s2 = ttk.Scrollbar(out_row)
+    out_map = tkinter.Text(out_row, height=4, width=50)
+    s2.pack(side="left", fill="y")
+    out_map.pack(side="left", fill="y")
+    s2.config(command=out_map.yview)
+    out_map.config(yscrollcommand=s2.set)
+
+    ttk.Button(last_row, text="encrypt", command=run).pack(side="left", fill="y")
+
+    window.mainloop()
 
 
 graphics()
