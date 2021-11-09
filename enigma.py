@@ -149,8 +149,8 @@ def boardparse():
         for i in a:
             try:
                 pair = i.split(":")
-                pboard[pboard.index(pair[0])] = pair[1]
-                pboard[pboard.index(pair[1])] = pair[0]
+                pboard[pboard.index(pair[0])] = pair[0]
+                pboard[pboard.index(pair[1])] = pair[1]
             except:
                 return pboard
         return pboard
@@ -237,7 +237,7 @@ def graphics():
     set3.pack(side="left", fill="y")
 
     my_var4 = tkinter.StringVar(window)
-    my_var4.set("eg a:b c:d e:f")
+    my_var4.set("a:b c:d e:f")
     text_map = ttk.Entry(box_frame1,textvariable=my_var4)
     text_map.pack(side="left", fill="y", padx=10, pady=5)
 
